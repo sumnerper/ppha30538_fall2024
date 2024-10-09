@@ -107,6 +107,8 @@ alt.Chart(movies_url).mark_circle().encode(
 
 Bin = True is just creating an automatic bin structure that is not prescribed. It has created 10 bins (groups). 
 
+Test my notes. 
+
 
 ## scatter plot -- 20 bins
 ```{python}
