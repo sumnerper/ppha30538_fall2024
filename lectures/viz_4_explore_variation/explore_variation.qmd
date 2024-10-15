@@ -14,8 +14,6 @@ engine: jupyter
 
 
 ```{python}
-#| echo: false
-#| message: false
 import altair as alt
 from vega_datasets import data
 from palmerpenguins import load_penguins
@@ -173,6 +171,7 @@ hist_rt
 
 Discussion question: how would you describe the distribution of rotten tomatoes ratings?
 
+<<<<<<< Updated upstream
 ::: {.notes .content-visible when-profile="speaker"}
 **NOTES:**
 *solution: 
@@ -182,6 +181,9 @@ two additional details are also notable
 2) there's a gentle shift/trend upward so higher-rated movies are a bit more common than lower-rated movies*
 :::
 
+=======
+Most of the movies have at least 10% positive ratings and a roughly uniform set of ratings. 
+>>>>>>> Stashed changes
 
 ## histogram of IMDB ratings
 ```{python}
@@ -191,6 +193,8 @@ hist_imdb = alt.Chart(movies_url).mark_bar().encode(
 )
 hist_imdb
 ```
+
+
 
 ## Side-by-side
 Discussion question -- compare the two ratings distributions. which is more informative?
@@ -204,6 +208,7 @@ Discussion question -- compare the two ratings distributions. which is more info
 hist_rt | hist_imdb
 ```
 
+In the IMDB chart there are more values and so if you were to pick any 2 values you might not know that they are different. But with the other graph you have a higher chance that the two values are different since you have about 100 something in every single bin. 
 
 ## introducing the penguins
 ```{python}
@@ -242,9 +247,9 @@ plot3 = alt.Chart(penguins).mark_bar().encode(
 plot1 & plot2 & plot3
 ```
 
-
 Discussion q -- what message comes from each `binwidth` choice?
 
+<<<<<<< Updated upstream
 ::: {.notes .content-visible when-profile="speaker"}
 **NOTES:**
 *solution 
@@ -252,6 +257,13 @@ the middle plot is by far the easiest to interpret. The top plot shows the bins 
 
 FYI, this deliberately intended to be a setup for the diamonds density plot coming up in the next subsection because there adding narrower bins is actually quite revealing*
 :::
+=======
+- Seems like if there are more bins then there are more fine grained differences between the values across the bins. 
+- Plot 1: With only 344 penguins, many 20 gram cells will be empty 
+- Plot 2: No more 0 bins, concentrated around 3400 g. Lot easier to see than the first graph. 
+- Plot 3: Not many larger than 6k, everyone is greater than 2k g
+
+>>>>>>> Stashed changes
 
 ## numeric variable: `transform_density()` 
 ```{python}
@@ -265,6 +277,10 @@ alt.Chart(penguins).transform_density(
 ```
     
 
+Trying to figure out the underlying distribution which gives this plot. 
+
+
+
 ## Back to diamonds, focus on `carat`
 ```{python}
 alt.data_transformers.disable_max_rows() # Needed because len(df) > 5000
@@ -274,6 +290,8 @@ alt.Chart(diamonds).mark_bar().encode(
     alt.Y('count()')
 )
 ```
+
+Most diamons have low weight and a few are high weight. 
 
 
 
@@ -296,6 +314,10 @@ alt.Chart(diamonds_small).mark_bar().encode(
 )
 ```
 
+Trying to remove the white space because not very helpful to have the other values that are completely missing. 
+
+
+
 ## Continuous Variables: Typical Values
 ```{python}
 alt.Chart(diamonds_small).mark_bar().encode(
@@ -309,6 +331,7 @@ Discussion questions
 1. What lessons does this plot teach?
 2. What questions does it raise?
 
+<<<<<<< Updated upstream
 ::: {.notes .content-visible when-profile="speaker"}
 **NOTES:**
 *
@@ -317,6 +340,15 @@ Discussion questions
 
 *ask class how many have been to the Art Institute and see this painting*
 :::
+=======
+- Focused around certain values so might be concerned about measurement error 
+- Might be seeing clustering around whole numbers because from a marketing perspective, it is better around 1 or 2 etc 
+- Clumping around certain values of 0.33, 0.50, 0.67 
+- External considerations may give rise to this distribution 
+
+Point of this is where increased binning might give rise to new patterns. 
+
+>>>>>>> Stashed changes
 
 ## Aside: "A Sunday on La Grande Jatte" by Seurat
 
@@ -333,6 +365,9 @@ In addition, there's something else (flip back) that you notice by looking close
 ## Aside: "A Sunday on La Grande Jatte" by Seurat
 ![](pictures/seurat_zoomed.jpg)
 
+No one in the paintaing is looking at anyone else; just looking into their own world. From a far seems like everyone is having a great time but how could they when no one is looking at each other? 
+
+Lesson: As the painter of your plot, you should be careful about every single pattern and element of the plot so that you're a more effective communicator. 
 
 
 # Unusual numeric values (`diamonds`)
@@ -356,6 +391,11 @@ diamonds['y'].describe()
 diamonds.loc[(diamonds['y'] < 3) | (diamonds['y'] > 20)] 
 ```
 ## Diamonds: sanity check by comparing to 10 random diamonds
+
+- When have a y of 0, then both x and z values also have 0. Only two rows have values across x, y, z. 
+- For the ones where there are values across, then x and z are very close. y is completely out there. 
+
+
 ```{python}
 diamonds.sample(n=10)
 ```
@@ -372,12 +412,15 @@ diamonds_clean = diamonds.loc[(diamonds['y'] >= 3) | (diamonds['y'] <= 20)]
 diamonds_clean
 ```
 
+
 ## Diamonds: option 2 for unusual values: missing
 ```{python}
 diamonds['y'] = np.where((diamonds['y'] < 3) | (diamonds['y'] > 20), np.nan, diamonds['y'])
 diamonds_clean = diamonds.dropna()
 diamonds_clean
 ```
+
+Just record the y value as NA and then leave the rest of the data intact. 
 
 
 ## Diamonds: option 3 for unusual values: winsorize
@@ -390,6 +433,7 @@ print(f"99th Percentile: {pctile99}")
 
 ```
 
+Compute the 1st and 99th percentile.   
 
 ## Diamonds: option 3 for unusual values: winsorize
 ```{python}
@@ -423,7 +467,7 @@ How do I decide which problem I have? Examine unusual values in context of other
 
 How do I decide whether to set to NA or winsorize? Ideally, ask your data provider what's going on with these values. 
 
-
+- Imagine 100 columns and in every column 1% look at garbage data. If you do drop the entire row then you're going to remove tons of data. 
 
 
 # Unusual values case study
@@ -465,6 +509,8 @@ outliers = alt.Chart(potential_outliers).mark_point(
 plot = base + outliers
 plot
 ```
+
+Corvette appears like 5 times so maybe this model has the best mileage. 
 
 
 ## Q: Why do some cars have better than typical mileage?
