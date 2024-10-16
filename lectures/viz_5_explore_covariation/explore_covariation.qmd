@@ -188,6 +188,9 @@ alt.Chart(movies_url).mark_circle().encode(
 ```
 Suffers from overplotting!
 
+Many dots are overlapping. 
+
+
 
 ## use `alt.Size('count()')` to address overplotting
 ```{python}
@@ -217,6 +220,7 @@ xy_size | xy_color
 
 Compare the *size* and *color*-based 2D histograms above. Which encoding do you think should be preferred? Why?
 
+
 ::: {.notes .content-visible when-profile="speaker"}
 **NOTES:**
 *solution
@@ -243,12 +247,20 @@ alt.Chart(diamonds).mark_rect().encode(
     alt.Color('count()', scale=alt.Scale(scheme='blues')))
 ```
 
+Exponential and dispersed. Ceiling is at 19k. 
+
 ## Question: How is carat related to price? 2 continuous vars
 ```{python}
 alt.Chart(diamonds).mark_boxplot().encode(
     alt.X('carat:Q', bin=alt.Bin(maxbins=10)), 
     alt.Y('price:Q'))
 ```
+
+Take a continuous variable, bin, and then create a boxplot. Not as useful in this context. Could increase the whiskers, or plot a random subsample to give reader a sense of the outliers. 
+
+Spread is bigger in the middle versus at the ends (as seen in the interquartile range). Lots of outliers at 1.5. Medians go up and then dip back down (at 2.5-3). 
+
+Have no sense of the count of the records. 
 
 ## Question: How is carat related to price? 2 continuous vars
 
@@ -265,6 +277,8 @@ alt.Chart(df).mark_point().encode(
    y = 'price:Q'
 )
 ```
+
+
 
 * What it does:
     1. Computes bins using quantiles of x
@@ -331,6 +345,17 @@ Are penguins getting heavier (`body_mass_g`) over time?
 
 Bonus: what is the headline of your plot and what are the sub-messages?
 
+```{python}
+alt.Chart(penguins).transform_density(
+    'body_mass_g',
+        groupby=['year'],  
+        as_=["body_mass_g", 'density']
+    ).mark_line().encode(
+        alt.X("body_mass_g:Q"),
+        alt.Y('density:Q'), 
+        alt.Color('year:N')
+    ).properties(width=400,height=300)
+```
 
 ## Meta comment: iterating on plot design
 
