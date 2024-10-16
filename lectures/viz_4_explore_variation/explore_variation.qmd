@@ -171,7 +171,6 @@ hist_rt
 
 Discussion question: how would you describe the distribution of rotten tomatoes ratings?
 
-<<<<<<< Updated upstream
 ::: {.notes .content-visible when-profile="speaker"}
 **NOTES:**
 *solution: 
@@ -181,9 +180,6 @@ two additional details are also notable
 2) there's a gentle shift/trend upward so higher-rated movies are a bit more common than lower-rated movies*
 :::
 
-=======
-Most of the movies have at least 10% positive ratings and a roughly uniform set of ratings. 
->>>>>>> Stashed changes
 
 ## histogram of IMDB ratings
 ```{python}
